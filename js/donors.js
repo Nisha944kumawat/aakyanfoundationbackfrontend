@@ -3,11 +3,20 @@ const donorPhotoInput = document.getElementById("donorPhotoInput");
 const donorSearchInput = document.getElementById("donorSearchInput");
 
 let donorPhotoFile = null;
-let donorPhotoPreview = "";
 let allDonors = [];
 
 function getToken() {
   return localStorage.getItem("token");
+}
+
+function getDonorPhotoUrl(photo) {
+  if (!photo) return "";
+
+  if (photo.startsWith("http://") || photo.startsWith("https://")) {
+    return photo;
+  }
+
+  return `${BASE_URL}${photo}`;
 }
 
 async function fetchDonors() {
@@ -35,13 +44,15 @@ function renderDonors(donors) {
     const card = document.createElement("div");
     card.className = "donor-card";
 
+    const photoUrl = getDonorPhotoUrl(donor.photo);
+
     card.innerHTML = `
       <button class="donor-delete-btn" title="Delete Donor">
         <i class="fa-solid fa-trash"></i>
       </button>
 
       <div class="donor-photo-box">
-        <img src="${donor.photo}" alt="${donor.name}">
+        <img src="${photoUrl}" alt="${donor.name}">
       </div>
 
       <div class="donor-info">
@@ -71,7 +82,6 @@ function renderDonors(donors) {
 
 function createDonorFormCard() {
   donorPhotoFile = null;
-  donorPhotoPreview = "";
 
   const formCard = document.createElement("div");
   formCard.className = "donor-form-card";
@@ -118,10 +128,8 @@ function createDonorFormCard() {
     const reader = new FileReader();
 
     reader.onload = function (e) {
-      donorPhotoPreview = e.target.result;
-
       uploadBox.innerHTML = `
-        <img src="${donorPhotoPreview}" alt="Donor Photo">
+        <img src="${e.target.result}" alt="Donor Photo">
       `;
 
       checkFormComplete(nameInput, amountInput, mobileInput, saveBtn);
@@ -192,6 +200,7 @@ async function saveDonor(data) {
     const result = await res.json();
 
     if (!res.ok) {
+      console.error("Donor save failed:", result);
       alert(result.message || "Donor save nahi hua");
       return;
     }
