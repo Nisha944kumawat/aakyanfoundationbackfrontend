@@ -12,6 +12,22 @@ function getToken() {
   return localStorage.getItem("token");
 }
 
+function getAuditPdfUrl(filePath) {
+  if (!filePath) return "";
+
+  if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
+    return filePath;
+  }
+
+  return `${BASE_URL}${filePath}`;
+}
+
+function getAuditPdfViewerUrl(pdfUrl) {
+  return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+    pdfUrl
+  )}`;
+}
+
 async function fetchAuditDocuments() {
   try {
     const res = await fetch(API_PATHS.AUDIT_DOCUMENTS);
@@ -36,6 +52,8 @@ function renderAuditDocumentFiles(documents) {
     const card = document.createElement("div");
     card.className = "document-card";
 
+    const pdfUrl = getAuditPdfUrl(pdf.file);
+
     card.innerHTML = `
       <div class="document-card-content">
         <div class="document-pdf-icon">
@@ -49,7 +67,7 @@ function renderAuditDocumentFiles(documents) {
             <i class="fa-solid fa-eye"></i>
           </button>
 
-          <a class="document-download-btn" href="${pdf.file}" download title="Download PDF">
+          <a class="document-download-btn" href="${pdfUrl}" download="${pdf.name}" title="Download PDF" target="_blank">
             <i class="fa-solid fa-download"></i>
           </a>
 
@@ -67,11 +85,11 @@ function renderAuditDocumentFiles(documents) {
     `;
 
     card.querySelector(".document-pdf-icon").addEventListener("click", () => {
-      openAuditDocumentPdfModal(pdf.file);
+      openAuditDocumentPdfModal(pdfUrl);
     });
 
     card.querySelector(".document-view-btn").addEventListener("click", () => {
-      openAuditDocumentPdfModal(pdf.file);
+      openAuditDocumentPdfModal(pdfUrl);
     });
 
     if (isAuditDocumentAdmin) {
@@ -177,6 +195,7 @@ async function saveAuditDocumentPdf(file) {
     const data = await res.json();
 
     if (!res.ok) {
+      console.error("Audit document upload failed:", data);
       alert(data.message || "Audit document upload failed");
       return;
     }
@@ -223,7 +242,8 @@ async function deleteAuditDocumentPdf(id) {
 }
 
 function openAuditDocumentPdfModal(pdfSrc) {
-  auditDocumentPdfFrame.src = pdfSrc;
+  const viewerUrl = getAuditPdfViewerUrl(pdfSrc);
+  auditDocumentPdfFrame.src = viewerUrl;
   auditDocumentPdfModal.classList.add("active");
 }
 
@@ -240,22 +260,6 @@ auditDocumentPdfModal.addEventListener("click", (e) => {
   }
 });
 
-auditPdfScrollUp.addEventListener("click", () => {
-  if (auditDocumentPdfFrame.contentWindow) {
-    auditDocumentPdfFrame.contentWindow.scrollBy({
-      top: -500,
-      behavior: "smooth",
-    });
-  }
-});
 
-auditPdfScrollDown.addEventListener("click", () => {
-  if (auditDocumentPdfFrame.contentWindow) {
-    auditDocumentPdfFrame.contentWindow.scrollBy({
-      top: 500,
-      behavior: "smooth",
-    });
-  }
-});
 
 fetchAuditDocuments();
