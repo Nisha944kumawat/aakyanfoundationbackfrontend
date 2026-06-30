@@ -260,22 +260,5 @@ documentPdfModal.addEventListener("click", (e) => {
   }
 });
 
-pdfScrollUp.addEventListener("click", () => {
-  if (documentPdfFrame.contentWindow) {
-    documentPdfFrame.contentWindow.scrollBy({
-      top: -500,
-      behavior: "smooth",
-    });
-  }
-});
-
-pdfScrollDown.addEventListener("click", () => {
-  if (documentPdfFrame.contentWindow) {
-    documentPdfFrame.contentWindow.scrollBy({
-      top: 500,
-      behavior: "smooth",
-    });
-  }
-});
 
 fetchDocuments();
