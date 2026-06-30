@@ -22,6 +22,12 @@ function getPdfUrl(filePath) {
   return `${BASE_URL}${filePath}`;
 }
 
+function getPdfViewerUrl(pdfUrl) {
+  return `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+    pdfUrl
+  )}`;
+}
+
 async function fetchDocuments() {
   try {
     const res = await fetch(API_PATHS.DOCUMENTS);
@@ -61,7 +67,7 @@ function renderDocumentPdfFiles(documents) {
             <i class="fa-solid fa-eye"></i>
           </button>
 
-          <a class="document-download-btn" href="${pdfUrl}" download title="Download PDF" target="_blank">
+          <a class="document-download-btn" href="${pdfUrl}" download="${pdf.name}" title="Download PDF" target="_blank">
             <i class="fa-solid fa-download"></i>
           </a>
 
@@ -236,7 +242,8 @@ async function deleteDocumentPdf(id) {
 }
 
 function openDocumentPdfModal(pdfSrc) {
-  documentPdfFrame.src = pdfSrc;
+  const viewerUrl = getPdfViewerUrl(pdfSrc);
+  documentPdfFrame.src = viewerUrl;
   documentPdfModal.classList.add("active");
 }
 
