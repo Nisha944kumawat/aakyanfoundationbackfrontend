@@ -20,8 +20,19 @@ async function fetchGalleryImages() {
     galleryImages = data;
     renderGalleryImages();
   } catch (error) {
+    console.error("Gallery fetch error:", error);
     alert("Server error while fetching gallery images");
   }
+}
+
+function getImageUrl(imagePath) {
+  if (!imagePath) return "";
+
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+
+  return `${BASE_URL}${imagePath}`;
 }
 
 function renderGalleryImages() {
@@ -31,7 +42,7 @@ function renderGalleryImages() {
     const card = document.createElement("div");
     card.className = "activity-calendar-card";
 
-    const imageUrl = `${BASE_URL}${item.image}`;
+    const imageUrl = getImageUrl(item.image);
 
     card.innerHTML = `
       <img src="${imageUrl}" alt="Gallery Image">
@@ -118,8 +129,12 @@ function showGalleryPreviewCard(imageSrc) {
     openGalleryImageModal(imageSrc);
   });
 
-  galleryGrid.insertBefore(previewCard, uploadCard);
-  uploadCard.remove();
+  if (uploadCard) {
+    galleryGrid.insertBefore(previewCard, uploadCard);
+    uploadCard.remove();
+  } else {
+    galleryGrid.appendChild(previewCard);
+  }
 }
 
 async function saveGalleryImage() {
@@ -148,6 +163,7 @@ async function saveGalleryImage() {
     const data = await res.json();
 
     if (!res.ok) {
+      console.error("Gallery upload failed:", data);
       alert(data.message || "Gallery image save nahi hui");
       return;
     }
@@ -155,6 +171,7 @@ async function saveGalleryImage() {
     selectedGalleryFile = null;
     fetchGalleryImages();
   } catch (error) {
+    console.error("Gallery save error:", error);
     alert("Server error while saving gallery image");
   }
 }
@@ -189,6 +206,7 @@ async function deleteGalleryImage(id) {
 
     fetchGalleryImages();
   } catch (error) {
+    console.error("Gallery delete error:", error);
     alert("Server error while deleting gallery image");
   }
 }
