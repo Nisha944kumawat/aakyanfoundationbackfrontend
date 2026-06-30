@@ -20,8 +20,19 @@ async function fetchPressCoverageImages() {
     pressCoverageImages = data;
     renderPressCoverageImages();
   } catch (error) {
+    console.error("Press coverage fetch error:", error);
     alert("Server error while fetching press coverage images");
   }
+}
+
+function getImageUrl(imagePath) {
+  if (!imagePath) return "";
+
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
+
+  return `${BASE_URL}${imagePath}`;
 }
 
 function renderPressCoverageImages() {
@@ -31,7 +42,7 @@ function renderPressCoverageImages() {
     const card = document.createElement("div");
     card.className = "activity-calendar-card";
 
-    const imageUrl = `${BASE_URL}${item.image}`;
+    const imageUrl = getImageUrl(item.image);
 
     card.innerHTML = `
       <img src="${imageUrl}" alt="Press Coverage Image">
@@ -118,8 +129,12 @@ function showPressCoveragePreviewCard(imageSrc) {
     openPressCoverageImageModal(imageSrc);
   });
 
-  pressCoverageGrid.insertBefore(previewCard, uploadCard);
-  uploadCard.remove();
+  if (uploadCard) {
+    pressCoverageGrid.insertBefore(previewCard, uploadCard);
+    uploadCard.remove();
+  } else {
+    pressCoverageGrid.appendChild(previewCard);
+  }
 }
 
 async function savePressCoverageImage() {
@@ -148,6 +163,7 @@ async function savePressCoverageImage() {
     const data = await res.json();
 
     if (!res.ok) {
+      console.error("Press coverage upload failed:", data);
       alert(data.message || "Press coverage image save nahi hui");
       return;
     }
@@ -155,6 +171,7 @@ async function savePressCoverageImage() {
     selectedPressCoverageFile = null;
     fetchPressCoverageImages();
   } catch (error) {
+    console.error("Press coverage save error:", error);
     alert("Server error while saving press coverage image");
   }
 }
@@ -189,6 +206,7 @@ async function deletePressCoverageImage(id) {
 
     fetchPressCoverageImages();
   } catch (error) {
+    console.error("Press coverage delete error:", error);
     alert("Server error while deleting press coverage image");
   }
 }
