@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aakhyaan Foundation</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
+
+    <link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/signup.css">
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem("token")) {
+            window.location.href = "../index.html";
+        }
+    </script>
+
+    <div id="header"></div>
+
+    <div id="footer"></div>
+    <div id="floating-icons"></div>
+
+    <script src="../config.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="../js/login.js"></script>
+    <script src="../js/signup.js"></script>
+
+</body>
+
+</html>

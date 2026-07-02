@@ -1,38 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aakhyaan Foundation</title>
-    <link rel="icon" type="image/png" href="../favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Aakhyaan Foundation</title>
+  <link rel="icon" type="image/png" href="../favicon.png" />
 
     <link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../css/admin-layout.css" />
+   <link rel="stylesheet" href="../css/login.css">
     <link rel="stylesheet" href="../css/signup.css">
 </head>
 
 <body>
 
-    <script>
-        if (!localStorage.getItem("token")) {
-            window.location.href = "../index.html";
-        }
-    </script>
+<script>
+  if (!localStorage.getItem("token")) {
+    window.location.href = "../index.html";
+  }
+</script>
 
-    <div id="header"></div>
+<div class="admin-layout">
 
-    <div id="footer"></div>
-    <div id="floating-icons"></div>
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <img src="../logo.png" alt="Aakhyaan Foundation">
+    </div>
 
-    <script src="../config.js"></script>
-    <script src="../js/header.js"></script>
-    <script src="../js/login.js"></script>
+    <nav class="admin-menu">
+      <a href="upcomingevent.html" class="menu-link active" target="adminFrame">Upcoming Event</a>
+      <a href="documents.html" class="menu-link" target="adminFrame">Report</a>
+      <a href="auditdocuments.html" class="menu-link" target="adminFrame">Audit</a>
+      <a href="donors.html" class="menu-link" target="adminFrame">List Of Donors</a>
+      <a href="activitycalendar.html" class="menu-link" target="adminFrame">Activity Calendar</a>
+      <a href="presscoverage.html" class="menu-link" target="adminFrame">Press Coverage</a>
+      <a href="blog.html" class="menu-link" target="adminFrame">Journaling / Newsletters / Blogs</a>
+      <a href="gallery.html" class="menu-link" target="adminFrame">Gallery</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+
+    <header class="admin-topbar">
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <h1>Welcome Back Admin Account</h1>
+
+      <button class="logout-btn" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </header>
+
+    <section class="admin-content">
+      <iframe
+        src="upcomingevent.html"
+        name="adminFrame"
+        id="adminFrame"
+        frameborder="0">
+      </iframe>
+    </section>
+
+  </main>
+
+</div>
+
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<script src="../config.js"></script>
+<script src="../js/admin-layout.js"></script>
+  <script src="../js/login.js"></script>
     <script src="../js/signup.js"></script>
-
 </body>
-
 </html>
