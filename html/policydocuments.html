@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Policy Documents</title>
+  <link rel="icon" type="image/png" href="../favicon.png">
+
+  <link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="../css/signup.css">
+  <link rel="stylesheet" href="../css/documents.css" />
+</head>
+
+<body>
+  <div id="header"></div>
+
+  <section class="document-admin-section">
+    <div class="document-header">
+      <h1>Policy Documents</h1>
+      <p>
+        Upload, save, view, download and manage important policy PDF documents.
+      </p>
+    </div>
+
+    <div class="document-grid" id="policyDocumentGrid"></div>
+  </section>
+
+  <input type="file" id="policyDocumentFileInput" accept="application/pdf" hidden />
+
+  <div class="document-pdf-modal" id="policyDocumentPdfModal">
+    <button class="document-modal-close" id="policyDocumentModalClose">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="document-pdf-box">
+      <iframe id="policyDocumentPdfFrame" src=""></iframe>
+    </div>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="../js/header.js"></script>
+  <script src="../js/policydocuments.js"></script>
+</body>
+</html>
